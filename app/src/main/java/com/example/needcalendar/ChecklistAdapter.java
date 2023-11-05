@@ -17,10 +17,10 @@ import java.util.List;
 
 public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.ViewHolder> {
 
-    private List<ListItem> checklistItems;
+    private List<list> checklistItems;
     private Context mContext;
 
-    public ChecklistAdapter(List<ListItem> items, Context context) {
+    public ChecklistAdapter(List<list> items, Context context) {
 
         this.checklistItems = items;
         this.mContext = context;
@@ -36,7 +36,7 @@ public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ListItem currentItem = checklistItems.get(position);
+        list currentItem = checklistItems.get(position);
         holder.titleTextView.setText(currentItem.getTitle());
         holder.placeTextView.setText(currentItem.getPlace());
         holder.memoTextView.setText(currentItem.getMemo());
@@ -44,7 +44,6 @@ public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.View
 
     @Override
     public int getItemCount() {
-
         return checklistItems.size();
     }
 
@@ -71,47 +70,42 @@ public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.View
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int curPos = getAdapterPosition();// 현재 리스트 아이템 위치
+                    int curPos = getAdapterPosition(); // 현재 리스트 아이템 위치
                     if (curPos != RecyclerView.NO_POSITION) {
-                        ListItem todoItem = checklistItems.get(curPos);
-                        Context context = view.getContext();
+                        list todoItem = checklistItems.get(curPos);
 
-                        String[] strChoiceItems = {"수정하기", "삭제하기"};
-                        // 다이얼로그를 만듭니다.
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                         builder.setTitle("작업을 선택하세요");
-                        builder.setItems(strChoiceItems, new DialogInterface.OnClickListener(){
+                        builder.setItems(new CharSequence[]{"수정하기", "삭제하기"}, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                               if(position == 0){
-
-
-                               }
-                            else if(position == 1 ){
-                                   //delete UI
-                                   deleteData(todoItem, curPos);
-
-                               }
-                            }
-                            private void deleteData(ListItem todoItem, int curPos) {
-                                if (mContext != null) {
-                                    DatabaseHelper dbHelper = new DatabaseHelper(mContext);
-                                    long deletedItemId = dbHelper.deleteData(todoItem.getId()); // 여기서 getId()는 아이템의 고유 ID를 반환하는 메서드입니다.
-                                    dbHelper.close();
-
+                                if (position == 0) {
+                                    // 수정하기
+                                } else if (position == 1) {
+                                    // 삭제하기
+                                    long deletedItemId = deleteData(todoItem.getId(), curPos);
                                     if (deletedItemId != -1) {
-                                        checklistItems.remove(curPos); // 체크리스트에서 아이템 제거
-                                        notifyItemRemoved(curPos); // 아답터에 아이템 제거를 알림
-                                        notifyItemRangeChanged(curPos, checklistItems.size()); // 아답터에 아이템 변경을 알림
                                         Toast.makeText(mContext, "목록이 제거되었습니다.", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Toast.makeText(mContext, "목록 제거에 실패했습니다.", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }
+
+                            private long deleteData(int id, int curPos) {
+                                DBcheck dbHelper = new DBcheck(mContext);
+                                long deletedItemId = dbHelper.deleteData(id);
+                                dbHelper.close();
+
+                                if (deletedItemId != -1) {
+                                    checklistItems.remove(curPos);
+                                    notifyItemRemoved(curPos);
+                                    notifyItemRangeChanged(curPos, checklistItems.size());
+                                }
+                                return deletedItemId;
+                            }
                         });
                         builder.create().show();
-
                     }
                 }
 

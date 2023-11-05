@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
 
+    // 회원가입 정보 저장 테이블.
+
     private static final String DATABASE_NAME = "MyAppDatabase";
     private static final int DATABASE_VERSION = 1;
 
@@ -18,11 +20,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_PASSWORD = "password";
     private static final String COLUMN_NAME = "name";
-
-    // 일정 정보 테이블
-    private static final String TABLE_SCHEDULE = "schedules";
-    private static final String COLUMN_TITLE = "title";
-    private static final String COLUMN_START_DATE = "start_date";
 
 
     // 사용자 정보 테이블
@@ -54,7 +51,6 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCHEDULE);
         onCreate(db);
     }
 
@@ -105,18 +101,5 @@ public class DBHelper extends SQLiteOpenHelper {
         return isValidUser;
     }
 
-
-
-    // 일정제목, 시작 시간 추가
-    public boolean addSchedule(String title, String startDate, String startTime, String endDate, String endTime) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_TITLE, title);
-        values.put(COLUMN_START_DATE, startDate);
-
-        long result = db.insert(TABLE_SCHEDULE, null, values);
-        return result != -1;
-    }
 
 }

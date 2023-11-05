@@ -2,18 +2,25 @@ package com.example.needcalendar;
 
 public class list {
 
+    private int id;
     private String title;
     private String place;
     private String memo;
 
 
-    public list(String title, String place, String memo) {
+    public list(int id, String title, String place, String memo) {
         this.title = title;
         this.place = place;
         this.memo = memo;
 
     }
 
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getTitle() {
         return title;
     }

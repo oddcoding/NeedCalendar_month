@@ -37,7 +37,7 @@
         <activity
             android:name="com.example.needcalendar.RegisterActivity"/>
         <activity
-            android:name="com.example.needcalendar.list_schedule"/>
+            android:name="com.example.needcalendar.add_checklist"/>
         <activity
             android:name="com.example.needcalendar.timer"/>
     </application>

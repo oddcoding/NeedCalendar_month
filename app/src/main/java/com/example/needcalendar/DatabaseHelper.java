@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+
+    //일정 저장 정보 테이블
+
     private static final String DATABASE_NAME = "YourDatabaseName.db";
     private static final int DATABASE_VERSION = 2;
 
@@ -22,13 +25,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String COLUMN_STARTDATE = "startDate";
     public static final String COLUMN_ENDDATE = "endDate";
-
-    // 데이터베이스 생성 SQL 문
-//    private static final String DATABASE_CREATE = "create table " + TABLE_NAME + "("
-//            + COLUMN_ID + " integer primary key autoincrement, "
-//            + COLUMN_TITLE + " text not null, "
-//            + COLUMN_PLACE + " text not null, "
-//            + COLUMN_MEMO + " text not null);";
 
     private static final String DATABASE_CREATE =
             "CREATE TABLE your_table_name (" +
